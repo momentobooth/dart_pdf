@@ -33,6 +33,7 @@ import 'interface.dart';
 import 'output_type.dart';
 import 'print_job.dart';
 import 'printer.dart';
+import 'printer_paper.dart';
 import 'printing_info.dart';
 import 'raster.dart';
 
@@ -172,6 +173,7 @@ class MethodChannelPrinting extends PrintingPlatform {
     OutputType outputType,
     bool forceCustomPrintPaper,
     bool windowsModernDialog,
+    PrinterPaper? paper,
   ) async {
     final job = _printJobs.add(
       onCompleted: Completer<bool>(),
@@ -193,6 +195,7 @@ class MethodChannelPrinting extends PrintingPlatform {
       'outputType': outputType.index,
       'forceCustomPrintPaper': forceCustomPrintPaper,
       if (windowsModernDialog) 'windowsModernDialog': windowsModernDialog,
+      if (paper != null) 'paper': paper.id,
     };
 
     await _channel.invokeMethod<int>('printPdf', params);
@@ -218,6 +221,17 @@ class MethodChannelPrinting extends PrintingPlatform {
     }
 
     return printers;
+  }
+
+  @override
+  Future<List<PrinterPaper>> listPaperSizes(Printer printer) async {
+    final params = <String, dynamic>{'printer': printer.url};
+    final list = await _channel.invokeMethod<List<dynamic>>(
+      'listPaperSizes',
+      params,
+    );
+
+    return [for (final paper in list!) PrinterPaper.fromMap(paper)];
   }
 
   @override
