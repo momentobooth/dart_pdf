@@ -176,6 +176,11 @@ mixin Printing {
   /// driver, such as borderless printing, are kept as they are configured for
   /// the printer, regardless of [usePrinterSettings]. The page orientation
   /// follows [format]. (Supported platforms: Windows)
+  ///
+  /// Without [paper] and with [usePrinterSettings] set to false, the paper of
+  /// the printer that has the size of [format] is used. When several papers
+  /// have that size, such as a paper with and without border, the first one
+  /// is used; set [paper] to choose. (Supported platforms: Windows)
   static FutureOr<bool> directPrintPdf({
     required Printer printer,
     required LayoutCallback onLayout,
