@@ -84,7 +84,9 @@ mixin Printing {
 
   /// Enumerate the paper sizes the driver of [printer] supports.
   ///
-  /// Pass one of them to [directPrintPdf] to print on that paper.
+  /// Pass one of them to [directPrintPdf] to print on that paper. The list is
+  /// empty when the printer is not available. Asking the driver can take a
+  /// while, for example for a network printer.
   ///
   /// This is not supported on all platforms. Check
   /// [PrintingInfo.canListPaperSizes] of [info] to find at runtime if this

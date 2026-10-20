@@ -32,8 +32,8 @@ class PrinterPaper {
   factory PrinterPaper.fromMap(Map<dynamic, dynamic> map) => PrinterPaper(
     id: map['id'],
     name: map['name'],
-    width: map['width'],
-    height: map['height'],
+    width: (map['width'] as num).toDouble(),
+    height: (map['height'] as num).toDouble(),
   );
 
   /// The platform specific identification of the paper.
@@ -52,6 +52,7 @@ class PrinterPaper {
   /// The paper as a page format without margins
   PdfPageFormat get format => PdfPageFormat(width, height);
 
+  /// The paper as a dictionary, the counterpart of [PrinterPaper.fromMap]
   Map<String, Object?> toMap() => {
     'id': id,
     'name': name,

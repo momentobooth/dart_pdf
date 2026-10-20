@@ -198,9 +198,12 @@ class MethodChannelPrinting extends PrintingPlatform {
       if (paper != null) 'paper': paper.id,
     };
 
+    // The job can fail before printPdf returns. Its error then reaches the
+    // await below, and must not be reported as unhandled in the meantime.
+    final completed = job.onCompleted!.future..ignore();
     await _channel.invokeMethod<int>('printPdf', params);
     try {
-      return await job.onCompleted!.future;
+      return await completed;
     } finally {
       _printJobs.remove(job.index);
     }
